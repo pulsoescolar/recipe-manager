@@ -11,6 +11,9 @@ Rails.application.routes.draw do
         end
       end
       resources :categories
+      
+      # Shopping list generation
+      post 'shopping_lists/generate', to: 'shopping_lists#generate'
     end
   end
   

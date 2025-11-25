@@ -138,7 +138,7 @@
           </h3>
           <p class="text-sm text-gray-600 line-clamp-2 mb-3">{{ recipe.attributes.description }}</p>
           
-          <div class="flex items-center text-sm text-gray-500 space-x-4">
+          <div class="flex items-center text-sm text-gray-500 space-x-4 mb-3">
             <div class="flex items-center">
               <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -153,7 +153,29 @@
             </div>
           </div>
           
-          <div v-if="recipe.relationships.categories.data.length" class="mt-3 pt-3 border-t border-gray-100">
+          <!-- Shopping List Button -->
+          <button
+            v-if="!shoppingListStore.isRecipeSelected(recipe.id)"
+            @click.stop="addToShoppingList(recipe)"
+            class="w-full flex items-center justify-center px-3 py-2 border border-indigo-300 rounded-md text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 transition-colors mb-3"
+          >
+            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Add to Shopping List
+          </button>
+          <button
+            v-else
+            @click.stop="removeFromShoppingList(recipe.id)"
+            class="w-full flex items-center justify-center px-3 py-2 border border-green-300 rounded-md text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors mb-3"
+          >
+            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Added to List
+          </button>
+          
+          <div v-if="recipe.relationships.categories.data.length" class="pt-3 border-t border-gray-100">
             <div class="flex flex-wrap gap-1">
               <span 
                 v-for="category in getRecipeCategories(recipe.relationships.categories.data)" 
@@ -220,9 +242,11 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRecipeStore } from '../stores/recipe'
 import { useCategoryStore } from '../stores/category'
+import { useShoppingListStore } from '../stores/shoppingList'
 
 const recipeStore = useRecipeStore()
 const categoryStore = useCategoryStore()
+const shoppingListStore = useShoppingListStore()
 
 // Local filters
 const filters = ref({
@@ -300,6 +324,15 @@ const changePage = (page) => {
   }
 }
 
+// Shopping List methods
+const addToShoppingList = (recipe) => {
+  shoppingListStore.addToCart(recipe)
+}
+
+const removeFromShoppingList = (recipeId) => {
+  shoppingListStore.removeFromCart(recipeId)
+}
+
 // Watch for filter changes with debounce
 let filterTimeout = null
 watch(
@@ -317,5 +350,6 @@ watch(
 onMounted(async () => {
   await categoryStore.fetchCategories()
   await recipeStore.fetchRecipes()
+  shoppingListStore.loadFromLocalStorage()
 })
 </script>

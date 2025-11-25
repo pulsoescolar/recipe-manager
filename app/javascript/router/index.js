@@ -5,6 +5,8 @@ const HomeView = () => import('../views/HomeView.vue')
 const RecipeView = () => import('../views/RecipeView.vue')
 const RecipeForm = () => import('../views/RecipeForm.vue')
 const CategoriesView = () => import('../views/CategoriesView.vue')
+const ShoppingListSetupView = () => import('../views/ShoppingListSetupView.vue')
+const ShoppingListView = () => import('../views/ShoppingListView.vue')
 
 const routes = [
   {
@@ -33,6 +35,18 @@ const routes = [
     path: '/categories',
     name: 'categories',
     component: CategoriesView
+  },
+  {
+    path: '/shopping-list/setup',
+    name: 'shopping-list-setup',
+    component: ShoppingListSetupView,
+    meta: { title: 'Shopping List Setup' }
+  },
+  {
+    path: '/shopping-list',
+    name: 'shopping-list',
+    component: ShoppingListView,
+    meta: { title: 'Shopping List' }
   },
   {
     path: '/:pathMatch(.*)*',
