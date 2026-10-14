@@ -48,7 +48,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem "rack-proxy", "~> 0.7.2"
+  gem "rack-proxy", "~> 2.0.1"
   gem "annotate", "~> 3.2"
 end
 
