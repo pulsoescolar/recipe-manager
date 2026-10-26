@@ -14,7 +14,7 @@ gem 'cssbundling-rails'
 
 # API specific
 gem 'active_model_serializers', '~> 0.10.13'
-gem 'kaminari', '~> 1.2', '>= 1.2.2'  # For pagination
+gem 'kaminari', '~> 1.3'            # For pagination
 gem 'image_processing', '~> 1.2'  # For Active Storage image processing
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
